@@ -7,7 +7,13 @@ use Illuminate\Http\Request;
 
 class DeviceController extends Controller
 {
-    public function index(Request $request)
+
+    public function index()
+    {
+        $devices = Device::orderBy('last_seen_time', 'desc')->get();
+        return view('devices.index', compact('devices'));
+    }
+    public function saveDevice(Request $request)
     {
         foreach ($request->devices as $device) {
             Device::updateOrCreate(

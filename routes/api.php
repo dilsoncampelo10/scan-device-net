@@ -8,4 +8,4 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::post('/devices', [DeviceController::class, 'index'])->name('device.index');
+Route::post('/devices', [DeviceController::class, 'saveDevice'])->name('device.save');
