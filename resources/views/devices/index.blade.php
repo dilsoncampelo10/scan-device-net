@@ -8,7 +8,7 @@
     <section class="container py-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1 class="h3">
-                📡 Dispositivos Conectados
+                <i class="fa-solid fa-house-signal"></i> Dispositivos Conectados
             </h1>
             <span class="text-muted">{{ now()->format('d/m/Y H:i') }}</span>
         </div>
@@ -31,7 +31,7 @@
                     <tbody>
                         @foreach ($devices as $device)
                             <tr>
-                                <td title="{{ $device->device_icon[1] }}">{{ $device->device_icon[0] }}</td>
+                                <td class="text-center" title="{{ $device->device_icon[1] }}"><i class="{{ $device->device_icon[0] }}"></i></td>
                                 <td><code>{{ $device->ip }}</code></td>
                                 <td>{{ $device->mac ?? 'Desconhecido' }}</td>
                                 <td>{{ $device->manufacturer ?? 'Desconhecido' }}</td>
