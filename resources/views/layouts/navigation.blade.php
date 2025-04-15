@@ -13,13 +13,19 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                        <i class="fa-solid fa-house"></i> {{ __('Dashboard') }}
                     </x-nav-link>
                 </div>
 
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('device.index')" :active="request()->routeIs('device.index')">
-                        {{ __('Dispositivos') }}
+                        <i class="fa-solid fa-house-signal"></i> {{ __('Dispositivos') }}
+                    </x-nav-link>
+                </div>
+
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('audits.device')" :active="request()->routeIs('audits.device')">
+                        <i class="fa-solid fa-user-secret"></i> {{ __('Logs de Dispositivos') }}
                     </x-nav-link>
                 </div>
             </div>

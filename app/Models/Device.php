@@ -5,15 +5,26 @@ namespace App\Models;
 use App\Helpers\DeviceHelper;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Device extends Model
+class Device extends Model implements Auditable
 {
+    use \OwenIt\Auditing\Auditable;
+
+    protected $auditInclude = [
+        'ip',
+        'mac',
+        'manufacturer',
+        'last_seen_time',
+    ];
+
     protected $fillable = [
         'ip',
         'mac',
         'manufacturer',
         'last_seen_time'
     ];
+
 
     public function getStatusBadgeAttribute(): string
     {
