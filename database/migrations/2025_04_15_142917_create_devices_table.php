@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('devices', function (Blueprint $table) {
             $table->id();
+            $table->string('ip')->unique();
+            $table->string('mac')->nullable();
+            $table->string('manufacturer')->nullable();
+            $table->timestamp('last_seen_time')->nullable();
             $table->timestamps();
         });
     }
