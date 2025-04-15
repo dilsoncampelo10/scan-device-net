@@ -1,4 +1,9 @@
 <x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Logs de Dispostivos') }}
+        </h2>
+    </x-slot>
     <div class="container my-5">
         <h1 class="mb-4"><i class="fa-solid fa-user-secret"></i> Auditoria de Dispositivos</h1>
     

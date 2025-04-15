@@ -2,13 +2,14 @@
 
 namespace App\Services;
 
+use App\Models\Device;
 use App\Notifications\NewDeviceAlert;
 use Illuminate\Support\Facades\Notification;
 
 class NotificationService
 {
 
-    public function notifyNewDevice($device)
+    public function notifyNewDevice(Device $device)
     {
         if ($device->wasRecentlyCreated) {
 

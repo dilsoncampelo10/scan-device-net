@@ -18,7 +18,7 @@ class DeviceService
     public function create(array $devices)
     {
         foreach ($devices as $device) {
-            Device::updateOrCreate(
+            $createdDevice = Device::updateOrCreate(
                 ['ip' => $device['ip']],
                 [
                     'mac' => $device['mac'] ?? null,
@@ -27,7 +27,7 @@ class DeviceService
                 ]
             );
 
-            $this->notificationService->notifyNewDevice($device);
+            $this->notificationService->notifyNewDevice($createdDevice);
         }
     }
 }
