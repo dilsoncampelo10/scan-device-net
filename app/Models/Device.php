@@ -18,7 +18,7 @@ class Device extends Model
     public function getStatusBadgeAttribute(): string
     {
         $lastSeen = Carbon::parse($this->last_seen_time);
-        $diff = now()->diffInMinutes($lastSeen);
+        $diff = $lastSeen->diffInMinutes(now());
 
         return match (true) {
             $diff <= 5  => '<span class="badge bg-success">Ativo</span>',
