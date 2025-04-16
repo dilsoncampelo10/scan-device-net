@@ -1,0 +1,46 @@
+name: Run Laravel Tests with Sail
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  laravel-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, bcmath, pdo, pdo_mysql
+          tools: composer
+          coverage: none
+
+      - name: Install Composer dependencies
+        run: composer install --no-progress --no-interaction
+
+      - name: Copy .env
+        run: cp .env.example .env
+
+      - name: Install Sail and dependencies
+        run: |
+          php artisan sail:install --no-interaction
+          ./vendor/bin/sail up -d
+          ./vendor/bin/sail composer install
+        env:
+          COMPOSER_ALLOW_SUPERUSER: 1
+
+      - name: Generate app key
+        run: ./vendor/bin/sail artisan key:generate
+
+      - name: Run migrations
+        run: ./vendor/bin/sail artisan migrate --force
+
+      - name: Run tests
+        run: ./vendor/bin/sail test
