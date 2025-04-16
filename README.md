@@ -1,66 +1,132 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# **Scan Device Net - Dashboard e Dispositivos**
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Este projeto é uma aplicação Laravel que gerencia dispositivos que entram e saem da rede, exibindo informações sobre seu status e outras métricas relevantes para um painel de controle. A aplicação usa o Vite para o gerenciamento de assets front-end e MySQL como banco de dados.
 
-## About Laravel
+Tela de verificação de Logs 
+<img src="docs/images/audits.jpg"/>
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Tela de verificação de dispositivos 
+<img src="docs/images/devices.jpg"/>
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Tela de dashboard com gráficos
+<img src="docs/images/dashboard.jpeg"/>
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## **Pré-requisitos**
 
-## Learning Laravel
+Antes de começar, você precisará ter os seguintes programas instalados em sua máquina:
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+-   PHP 8.3 ou superior
+-   Composer
+-   Node.js e NPM
+-   MySQL 8.0 ou superior
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+## **Ou Então**
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Simplesmente use Docker
 
-## Laravel Sponsors
+-   Docker
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## **Instalação**
 
-### Premium Partners
+Siga as etapas abaixo para configurar o ambiente de desenvolvimento local:
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+### 1. Clone o repositório
 
-## Contributing
+Clone o repositório para sua máquina local:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+git clone https://github.com/dilsoncampelo10/scan-device-net
+cd scan-device-net
 
-## Code of Conduct
+composer install --no-scripts
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+# Copie o .env de exemplo
+cp .env.example .env
 
-## Security Vulnerabilities
+# Copie o .env de testes
+cp .env.testing.example .env.testing
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+# Gere a chave da aplicação
+php artisan key:generate
 
-## License
+npm install
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+npm run build
+
+# Rodar as migrações do banco de dados
+php artisan migrate
+
+# Iniciando servidor
+php artisan serve
+
+# Rodando testes
+php artisan test
+```
+
+Utilizando o Sail do Laravel:
+
+```bash
+# Crie um apelido para simplificar o uso do Sail (se necessário)
+alias sail='./vendor/bin/sail'
+
+# Subir os containers do Docker
+sail up -d
+
+# Instalar dependências do Composer (PHP)
+sail composer install
+
+# Rodar as migrações do banco de dados
+sail artisan migrate
+
+# Rodar o servidor de desenvolvimento para o front-end (se necessário)
+sail npm run dev
+
+# Ou rodar o build do front-end
+sail npm run build
+```
+
+# Capturar informações trafegadas na rede:
+
+Para isso, existe uma pasta no projeto chamada shellscript, dentro dela tem o arquivo devices.sh
+Nele, rodamos o comando nmap e jq, caso não tenha instalado rode:
+
+```bash
+sudo apt install jq && sudo apt install nmap
+```
+
+Adicionar a permissão de execução ao arquivo:
+
+```bash
+chmod +x shellscript/devices.sh
+
+# execute
+./shellscript/devices.sh
+```
+
+A resposta deve ser semelhante a:
+{"status":"ok"}
+
+Caso der algum erro, troque a url da Api no arquivo de acordo  com da sua máquina
+
+Para ficar capturando as redes, vamos adicionar o script em um cron, que fica rodando ele a cada 5 minutos:
+
+```bash
+crontab -e
+
+```
+### Adicione o conteúdo abaixo ao cron
+*/5 * * * * /caminho/para/devices.sh
+
+# Tecnologias Utilizadas
+
+- Backend: Laravel 12
+
+- Frontend: Vite + Blade e ChartJS
+
+- Banco de Dados: MySQL
+
+- Testes: PHPUnit com SQLITE
+
+- Laravel Audits
+
+- Shell Script
