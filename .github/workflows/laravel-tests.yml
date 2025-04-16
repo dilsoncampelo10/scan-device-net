@@ -1,4 +1,4 @@
-name: Run Laravel Tests
+name: Run Laravel Tests with Sail
 
 on:
   push:
@@ -10,20 +10,6 @@ jobs:
   laravel-tests:
     runs-on: ubuntu-latest
 
-    services:
-      mysql:
-        image: mysql:8
-        env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: laravel
-        ports:
-          - 3306:3306
-        options: >-
-          --health-cmd="mysqladmin ping"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=3
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -33,6 +19,7 @@ jobs:
         with:
           php-version: '8.3'
           extensions: mbstring, bcmath, pdo, pdo_mysql
+          tools: composer
           coverage: none
 
       - name: Install Composer dependencies
@@ -41,22 +28,33 @@ jobs:
       - name: Copy .env
         run: cp .env.example .env
 
-      - name: Generate app key
-        run: php artisan key:generate
-
-      - name: Set Laravel database config
+      - name: Install Sail and dependencies
         run: |
-          php artisan config:clear
+          php artisan sail:install --no-interaction
+          ./vendor/bin/sail up -d
+          ./vendor/bin/sail composer install
         env:
-          DB_CONNECTION: mysql
-          DB_HOST: 127.0.0.1
-          DB_PORT: 3306
-          DB_DATABASE: laravel
-          DB_USERNAME: root
-          DB_PASSWORD: root
+          COMPOSER_ALLOW_SUPERUSER: 1
+
+      - name: Generate app key
+        run: ./vendor/bin/sail artisan key:generate
+
+      
+      - name: Create .env.testing
+        run: |
+          echo "APP_KEY=base64:W9eGAwfY+syDedNAXFdltF9aT2zlwPRBwnXQSLvvr9s=" > .env.testing
+          echo "DB_CONNECTION=sqlite" >> .env.testing
+          echo "DB_DATABASE=:memory:" >> .env.testing
+
+      - name: Install NPM dependencies
+        run: npm install
+
+      - name: Build assets with Vite
+        run: npm run build
+
 
       - name: Run migrations
-        run: php artisan migrate --force
+        run: ./vendor/bin/sail artisan migrate --force
 
       - name: Run tests
-        run: php artisan test
+        run: ./vendor/bin/sail test
