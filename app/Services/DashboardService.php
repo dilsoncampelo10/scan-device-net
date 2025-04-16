@@ -17,7 +17,7 @@ class DashboardService
         ];
     }
 
-    private function getDevicesByDay()
+    public function getDevicesByDay()
     {
         return Device::select(
             DB::raw('DATE(last_seen_time) as date'),
@@ -28,7 +28,7 @@ class DashboardService
             ->get();
     }
 
-    private function getDevicesByManufacturer()
+    public function getDevicesByManufacturer()
     {
         return Device::select('manufacturer', DB::raw('count(*) as total'))
             ->groupBy('manufacturer')
@@ -36,7 +36,7 @@ class DashboardService
             ->get();
     }
 
-    private function getDeviceStatus(): array
+    public function getDeviceStatus(): array
     {
         $now = now();
 

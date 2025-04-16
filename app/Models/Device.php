@@ -3,13 +3,14 @@
 namespace App\Models;
 
 use App\Helpers\DeviceHelper;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use OwenIt\Auditing\Contracts\Auditable;
 
 class Device extends Model implements Auditable
 {
-    use \OwenIt\Auditing\Auditable;
+    use \OwenIt\Auditing\Auditable, HasFactory;
 
     protected $auditInclude = [
         'ip',
@@ -23,6 +24,10 @@ class Device extends Model implements Auditable
         'mac',
         'manufacturer',
         'last_seen_time'
+    ];
+
+    protected $casts = [
+        'last_seen_time' => 'datetime',
     ];
 
 
