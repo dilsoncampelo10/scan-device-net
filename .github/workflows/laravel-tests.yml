@@ -39,6 +39,13 @@ jobs:
       - name: Generate app key
         run: ./vendor/bin/sail artisan key:generate
 
+      
+      - name: Create .env.testing
+        run: |
+          echo "APP_KEY=base64:W9eGAwfY+syDedNAXFdltF9aT2zlwPRBwnXQSLvvr9s=" > .env.testing
+          echo "DB_CONNECTION=sqlite" >> .env.testing
+          echo "DB_DATABASE=:memory:" >> .env.testing
+
       - name: Run migrations
         run: ./vendor/bin/sail artisan migrate --force
 
